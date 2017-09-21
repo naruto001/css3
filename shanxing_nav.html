@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>扇形导航</title>
+        <style>
+            html {
+                height:100%;
+                overflow:hidden;
+            }
+            body {
+                background:#f9f9f9;
+            }
+            #menu {
+                width:50px;
+                height:50px;
+                position:fixed;
+                right:20px;
+                bottom:20px;
+            }
+            #menu_list {
+                width:42px;
+                height:42px;
+                position:relative;
+                margin:4px;
+            }
+            #menu_list img {
+                border-radius:21px;
+                position:absolute;
+                left:0;
+                top:0;
+                border-radius:21px;
+            }
+            #home {
+                width:50px;
+                height:50px;
+                position:absolute;
+                left:0;
+                top:0;
+                background:url(img/home.png) no-repeat;
+                border-radius:25px;
+                transition:2s;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                var oHome = document.getElementById("home");
+                var aImg = document.getElementById("menu_list").getElementsByTagName("img");
+                var flag = 1;
+                
+                oHome.onclick = function () {
+                    var iR = -150;
+                    if(flag) {
+                        this.style.WebkitTransform = "rotate(-360deg)";
+                        for(var i=0; i<aImg.length; i++) {
+                            var oLT = toTL(iR,90/4*i);
+                            aImg[i].style.transition = "0.5s "+i*200+"ms";
+                            aImg[i].style.left = oLT.l + "px";
+                            aImg[i].style.top = oLT.t + "px";
+                            aImg[i].style.WebkitTransform = "rotate(-720deg)";
+                        }
+                        flag = 0;
+                    }else {
+                        this.style.WebkitTransform = "rotate(0deg)";
+                        for(var i=0; i<aImg.length; i++) {
+                            aImg[i].style.transition = "0.5s "+(aImg.length - i - 1)*200+"ms";
+                            aImg[i].style.left = 0 + "px";
+                            aImg[i].style.top = 0 + "px";
+                            aImg[i].style.WebkitTransform = "rotate(-0deg)";
+                        }
+                        flag = 1;
+                    }
+                }
+            }
+
+            function toTL( iR,iDeg ) {
+                return {l:Math.round(Math.sin( Math.PI*iDeg/180 )*iR),t:Math.round( Math.cos(Math.PI*iDeg/180)*iR )};
+            }
+        </script>
+    </head>
+    <body>
+        <div id="menu">
+            <div id="menu_list">
+                <img src="img/prev.png"/>
+                <img src="img/open.png"/>
+                <img src="img/clos.png"/>
+                <img src="img/full.png"/>
+                <img src="img/refresh.png"/>
+            </div>
+            <div id="home"></div>
+        </div>
+    </body>
+</html>
